@@ -76,7 +76,7 @@ bpPhenoShiny <- function(x, order=1, formula = response ~ trend + harmon, breaks
     # def function wrapping the two above functions
     
     ts <- bfastts(data = x, dates = index(x), type = 'irregular')
-    out <- bp(ts = x, order = order, formula = formula, breaks = breaks, h = h)
+    out <- bp(ts = ts, order = order, formula = formula, breaks = breaks, h = h)
     return(out)
 }
 
