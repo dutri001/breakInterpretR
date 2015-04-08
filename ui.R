@@ -5,10 +5,12 @@ library(shiny)
 shinyUI(fluidPage(
   fluidRow(
     column(width = 3,
-           numericInput(inputId = 'nBreaks', label = 'Number of breaks', value = 1),
            uiOutput("inSelect")),
     column(width = 8, offset = 1,
-           plotOutput("bfastPlot"))
+           tabsetPanel(
+             tabPanel('plot', plotOutput("bfastPlot")),
+             tabPanel('table', tableOutput('table1'))
+           ))
     ),
   fluidRow(
     column(width = 4,
