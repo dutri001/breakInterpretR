@@ -95,17 +95,18 @@ shinyServer(function(input, output) {
     input$update
     tsNum$i <- isolate(tsNum$i) + 1
   })
+
+
+ # Saving output
+      output$downloadTable <- downloadHandler(
+        filename = 'trainingClassification.rds',
+        content = function(file) {
+          saveRDS(values$df, file)
+        }
+      )
 })
 
-  # Saving output
-#   observe({
-#     if (input$save == 0)
-#       return()
-#     
-#     isolate({
-#       # Do your saving in here
-#     })
-#   })
+
 
 
 

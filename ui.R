@@ -14,7 +14,8 @@ shinyUI(fluidPage(
     ),
   fluidRow(
     column(width = 4,
-           actionButton("update", "Register / Next time-series")),
+           actionButton("update", "Register / Next time-series"),
+           downloadButton('downloadTable', 'Download Table')),
     column(width = 4,
            selectInput('formula',
                        label = 'Formula',
