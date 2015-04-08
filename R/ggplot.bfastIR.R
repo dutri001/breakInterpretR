@@ -5,11 +5,18 @@ ggplot.bfastIR <- function(x, seg = TRUE, order, formula) {
   ggdf$breaks[x$breaks$breakpoints] <- 1
   
   xIntercept <- ggdf$time[ggdf$breaks == 1]
+  ggdf[,'breakNumber'] <- NA
+  if (!is.na(x$breaks$breakpoints)) {
+    ggdf$breakNumber[!is.na(ggdf$breaks)] <- 1:length(x$breaks$breakpoints)
+  }
+  ggdf[,'maxY'] <- max(ggdf$response)
+  
   
   gg <- ggplot(ggdf, aes(time, response)) +
     geom_line() +
     geom_point(color = 'green') +
     geom_vline(xintercept = xIntercept, color = 'red', linetype = 'dashed') +
+    geom_text(aes(x = time + 0.5, y = maxY, label = breakNumber)) +
     scale_x_continuous(breaks=floor(min(ggdf$time)):ceiling(max(ggdf$time))) +
     theme(axis.text.x = element_text(angle = 60, hjust = 1))
   
