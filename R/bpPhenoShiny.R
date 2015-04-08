@@ -53,10 +53,10 @@ bpPhenoShiny <- function(x, order=1, formula = response ~ trend + harmon, breaks
         duration <- diff(range(subDf$time))
         # Fill dataframe 
         if (i > 1) {
-          df[i-1, c(7:11)] <- c(m, sl, yBegin, yEnd, duration)
+          df[i-1, c(7:11)] <- c(sl, yBegin, yEnd, duration, m)
         }
         if (i < (length(segments) - 1))
-        df[i, c(2:6)] <- c(m, sl, yBegin, yEnd, duration)
+        df[i, c(2:6)] <- c(sl, yBegin, yEnd, duration, m)
       }
       return(df)        
     }
