@@ -8,6 +8,8 @@ ggplot.bfastIR <- function(x, seg = TRUE, order, formula) {
   ggdf[,'breakNumber'] <- NA
   if (!is.na(x$breaks$breakpoints)) {
     ggdf$breakNumber[!is.na(ggdf$breaks)] <- 1:length(x$breaks$breakpoints)
+  } else {
+    ggdf$breakNumber[floor(nrow(ggdf)/2)] <- "No Break"
   }
   ggdf[,'maxY'] <- max(ggdf$response)
   

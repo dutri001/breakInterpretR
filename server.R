@@ -20,6 +20,9 @@ shinyServer(function(input, output) {
     
     
     id <- tsNum$i
+    if(all(is.na(zooTs[,id]))) {
+      return(NULL)
+    }
     
     formula <- switch(input$formula,
                       'trend' = response ~ trend,
@@ -52,13 +55,23 @@ shinyServer(function(input, output) {
                       'harmon' = response ~ harmon)
     
     order <- input$order
-    ggplot(breakpts(), formula = formula, order = order)      
+    if(is.null(breakpts())) {
+      print("No Data")
+    } else {
+      ggplot(breakpts(), formula = formula, order = order)   
+    }       
   })
 
 
   
   # dynamic select (link to uiOutput("inSelect") in UI)
   output$inSelect <- renderUI({
+    if (is.null(breakpts())) {
+      return(NULL)
+    }
+    if(is.na(breakpts()$breaks$breakpoints)) {
+      return(NULL)
+    }
     nBreaks <- as.integer(length(breakpts()$breaks$breakpoints))
     lapply(1:nBreaks, function(i) {
       selectInput(paste0("Class", i), label = paste("Break_", i),  choices = c('Burn','Reg2stable', 'Other'), selected = 'Burn')
@@ -68,8 +81,14 @@ shinyServer(function(input, output) {
   
   # Reactive that returns a one column dataframe with all classes
   breakClass <- reactive({
+    if (is.null(breakpts())) {
+      return(NULL)
+    }
+    if(is.na(breakpts()$breaks$breakpoints)) {
+      return(NULL)
+    }
     nBreaks <- as.numeric(length(breakpts()$breaks$breakpoints))
-    
+
     breakClasses <- sapply(1:nBreaks, function(i) {
       input[[paste0("Class", i)]]
     })
