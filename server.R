@@ -12,11 +12,11 @@ shinyServer(function(input, output) {
   
   # Reactive that runs breakpoints()
   breakpts <- reactive({
-    zooTs <- input$zooTs
-    if (is.null(zooTs))
-      return(NULL)
+#     zooTs <- input$zooTs
+#     if (is.null(zooTs))
+#       return(NULL)
     
-    zooTs <- readRDS(zooTs$datapath) 
+    zooTs <- readRDS('data/maf_NDMI.rds') 
     
     
     id <- tsNum$i
@@ -74,7 +74,7 @@ shinyServer(function(input, output) {
     }
     nBreaks <- as.integer(length(breakpts()$breaks$breakpoints))
     lapply(1:nBreaks, function(i) {
-      selectInput(paste0("Class", i), label = paste("Break_", i),  choices = c('Burn','Reg2stable', 'Other'), selected = 'Burn')
+      selectInput(paste0("Class", i), label = paste("Break_", i),  choices = c('Burn','Stabilization', 'Undefined'), selected = 'Burn')
     })
   })
 
@@ -99,7 +99,7 @@ shinyServer(function(input, output) {
 
 
     values <- reactiveValues()
-    values$df <- data.frame(Class = factor(levels = c('Burn','Reg2stable', 'Other')), 'Date' = numeric(0), 'SegDuration_pre' = numeric(0), 'SegSlope_pre'= numeric(0), 'SegYBegin_pre'= numeric(0), 'SegYEnd_pre'= numeric(0), 'SegMean_pre'= numeric(0), 'SegDuration_post'= numeric(0), 'SegSlope_post'= numeric(0), 'SegYBegin_post'= numeric(0), 'SegYEnd_post'= numeric(0), 'SegMean_post'= numeric(0))
+    values$df <- data.frame(Class = factor(levels = c('Burn','Stabilization', 'Undefined')), 'Date' = numeric(0), 'SegDuration_pre' = numeric(0), 'SegSlope_pre'= numeric(0), 'SegYBegin_pre'= numeric(0), 'SegYEnd_pre'= numeric(0), 'SegMean_pre'= numeric(0), 'SegDuration_post'= numeric(0), 'SegSlope_post'= numeric(0), 'SegYBegin_post'= numeric(0), 'SegYEnd_post'= numeric(0), 'SegMean_post'= numeric(0))
     newEntry <- observe({
       if(input$update > 0) {
         # Add selected classes to dataframe
